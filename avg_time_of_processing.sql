@@ -13,5 +13,11 @@ insert into Activity (machine_id, process_id, activity_type, timestamp) values (
 insert into Activity (machine_id, process_id, activity_type, timestamp) values ('2', '1', 'start', '2.5');
 insert into Activity (machine_id, process_id, activity_type, timestamp) values ('2', '1', 'end', '5');
 
-Select *
-From Activity;
+Select a.machine_id, ROUND(AVG(b.timestamp - a.timestamp), 3) as processing_time
+From Activity as a
+Join Activity as b
+on a.machine_id = b.machine_id
+AND a.process_id = b.process_id 
+AND a.activity_type = 'start' 
+AND b.activity_type = 'end'
+group by a.machine_id
